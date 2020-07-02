@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {map, startWith} from "rxjs/operators";
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
+import { ApiService } from '../api.service';
 
 export interface TaxName {
   taxID: number;
@@ -25,12 +26,15 @@ export class InputPageComponent implements OnInit {
   filteredOptions: Observable<TaxName[]>;
   options2: string[] = [];
   selectedOptions:Set<TaxName> = new Set()
-  chosenDatabase: string;
+  selectedDatabase: string = 'Uniprot';
+  selectedRank:string='species';
   databases: string[] = ['Uniprot', 'NCBI-nr', 'Swissprot'];
+  ranks: string[] = ['species', 'genus', 'order', 'class', 'kingdom', `superkingdom`]
   displayedColumns: string[] = ['taxID', 'name', 'rank'];
   dataSource = new MatTableDataSource<TaxName>([]);
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild('bindingInput') bindingInput: ElementRef;
+  constructor(private apiService: ApiService) { }
 
 
   ngOnInit() {
@@ -39,6 +43,9 @@ export class InputPageComponent implements OnInit {
       map(value => typeof value === 'string' ? value : value.name),
       map(name => name.length >= 1 ? this._filter(name) : [])
     );
+    /*this.apiService.getNews().subscribe((data)=>{
+      console.log(data)
+    });*/
   }
 
   displayName(taxname: TaxName): string {
@@ -50,28 +57,42 @@ export class InputPageComponent implements OnInit {
     return this.options.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
-  addName(value: TaxName): void {
-    this.selectedOptions.add(value);
+  addName(taxObject: TaxName): void {
     this.myControl.setValue('');
-    this.refreshTable();
+    this.refreshTable(taxObject);
 
   }
 
   getTaxIDValue(): any {
     let splitted = this.bindingInput.nativeElement.value.split(/\s*[,;]\s*|\s/);
     let arrayOfTaxIDs = splitted.map(Number)
-    console.log(arrayOfTaxIDs)
     arrayOfTaxIDs.forEach((taxID) => {
       let taxObject = this.options.find(x => x.taxID === taxID);
-      console.log(taxID);
       if (taxObject!==undefined){
-        this.selectedOptions.add(taxObject);
-        this.refreshTable()
+        this.refreshTable(taxObject)
       }
     });
   }
 
-  refreshTable() {
-        this.dataSource.data = [...this.selectedOptions];
+  refreshTable(taxObject) {
+    this.selectedOptions.add(taxObject);
+    this.dataSource.data = [...this.selectedOptions];
     }
+
+  deleteSelectedTaxIDs(){
+    this.selectedOptions = new Set<TaxName>();
+    this.dataSource.data = [...this.selectedOptions];
+  }
+
+  sendGetRequest(){
+    console.log(this.selectedRank);
+    console.log(this.selectedDatabase);
+    let taxIDs:string='?taxid=';
+    this.selectedOptions.forEach((item) => {
+      taxIDs = taxIDs + ',' + item.taxID;
+    });
+    console.log(taxIDs)
+    //taxIDs.splice(, 1);
+    let urlRequest: string;
+  }
 }

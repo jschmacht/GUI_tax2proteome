@@ -43,8 +43,9 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
-
-
+<div class="clear-button">
+  <button mat-raised-button color="warn" (click)="deleteSelectedTaxIDs()">Delete all taxa</button>
+</div>
 
 taxID input
 <div class="">
@@ -60,50 +61,35 @@ taxID input
   </div>
   </div>
 </div>
-<!-- clear all feld-->
-<!-- <div (keyup)="0">
-  <label>taxonID Input:
-    <input type="text" value="" #bindingInput></label>
-  <div>
-  <button (click)="getTaxIDValue()">Add taxa</button>
-  </div>
-</div>-->
 
-<!-- database chose -->
-<label id="database-radio-group-label">Chose database</label>
-<mat-radio-group
-  aria-labelledby="database-radio-group-label"
-  class="database-radio-group"
-  [(ngModel)]="chosenDatabase">
-  <mat-radio-button class="database-radio-button" *ngFor="let database of databases" [value]="database">
-    {{database}}
-  </mat-radio-button>
-</mat-radio-group>
+<!-- database selection -->
+<label id="database-radio-group-label">Select database</label>
+<section>
+  <mat-radio-group
+    aria-labelledby="radio-group-label"
+    class="database-radio-group"
+    [(ngModel)]="selectedDatabase">
+    <mat-radio-button class="radio-button" *ngFor="let database of databases" [value]="database">
+      {{database}}
+    </mat-radio-button>
+  </mat-radio-group>
+</section>
 
-<!--<p>
-  <mat-button-toggle-group name="database" aria-label="Font Style">
-    <mat-button-toggle value="Uniprot">uniprot</mat-button-toggle>
-    <mat-button-toggle value="NCBI">ncbi</mat-button-toggle>
-    <mat-button-toggle value="Swissprot">swissprot</mat-button-toggle>
-  </mat-button-toggle-group>
-</p>-->
-<!-- <form class="example-form">
-  <mat-form-field class="example-full-width">
-    <input type="text"
-            placeholder="Escherichia coli"
-            aria-label="Number"
-            matInput
-            [formControl]="myControl"
-            [matAutocomplete]="auto">
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-        {{option}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <button mat-button (click)="addName('lala')">add</button>
-</form>-->
+<!-- rank selection -->
+<section>
+  <label id="radio-group-label">Select rank</label>
+  <mat-radio-group
+    aria-labelledby="radio-group-label"
+    class="rank-radio-group"
+    [(ngModel)]="selectedRank">
+    <mat-radio-button class="radio-button" *ngFor="let rank of ranks" [value]="rank">
+      {{rank}}
+    </mat-radio-button>
+  </mat-radio-group>
+</section>
 
+<!-- send get request to REST API -->
+<input type="button" (click)="sendGetRequest()"  value="Generate Database"/>
 
 
 
