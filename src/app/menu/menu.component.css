@@ -1,0 +1,12 @@
+#navbar{
+  background-color: dodgerblue;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+#navbar mat-button-toggle{
+  background-color: dodgerblue;
+  border:0px
+}
+.active_bttn {
+  background-color: darkslateblue!important;
+}

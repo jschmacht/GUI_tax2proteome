@@ -1,0 +1,109 @@
+<!-- autocomplete -->
+<form class="flex-container">
+  <mat-form-field class="flex-item:nth-child(1)">
+    <input type="text"
+           placeholder="Escherichia coli"
+           aria-label="Number"
+           matInput [formControl]="myControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='addName($event.option.value)' [displayWith]="displayName" >
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <!--  <button mat-button (click)="addName('lala')">add</button>-->
+  <div class="flex-item:nth-child(2)">
+    Add scientific name
+  </div>
+ </form>
+
+<!-- table given input taxons -->
+<p>chosen taxa</p>
+<table mat-table [dataSource]="dataSource" class="table">
+  <!-- Position Column -->
+  <ng-container matColumnDef="taxID">
+    <th mat-header-cell *matHeaderCellDef> Taxon ID </th>
+    <td mat-cell *matCellDef="let element"> {{element.taxID}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="rank">
+    <th mat-header-cell *matHeaderCellDef> Rank </th>
+    <td mat-cell *matCellDef="let element"> {{element.rank}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+
+
+
+taxID input
+<div class="">
+  <div class="">
+    Input taxon IDs
+  </div>
+  <div class="">
+    <label>
+      <textarea matInputclass="text" value="" #bindingInput></textarea>
+    </label>
+    <div>
+  <button (click)="getTaxIDValue()">Add taxa</button>
+  </div>
+  </div>
+</div>
+<!-- clear all feld-->
+<!-- <div (keyup)="0">
+  <label>taxonID Input:
+    <input type="text" value="" #bindingInput></label>
+  <div>
+  <button (click)="getTaxIDValue()">Add taxa</button>
+  </div>
+</div>-->
+
+<!-- database chose -->
+<label id="database-radio-group-label">Chose database</label>
+<mat-radio-group
+  aria-labelledby="database-radio-group-label"
+  class="database-radio-group"
+  [(ngModel)]="chosenDatabase">
+  <mat-radio-button class="database-radio-button" *ngFor="let database of databases" [value]="database">
+    {{database}}
+  </mat-radio-button>
+</mat-radio-group>
+
+<!--<p>
+  <mat-button-toggle-group name="database" aria-label="Font Style">
+    <mat-button-toggle value="Uniprot">uniprot</mat-button-toggle>
+    <mat-button-toggle value="NCBI">ncbi</mat-button-toggle>
+    <mat-button-toggle value="Swissprot">swissprot</mat-button-toggle>
+  </mat-button-toggle-group>
+</p>-->
+<!-- <form class="example-form">
+  <mat-form-field class="example-full-width">
+    <input type="text"
+            placeholder="Escherichia coli"
+            aria-label="Number"
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button mat-button (click)="addName('lala')">add</button>
+</form>-->
+
+
+
+
