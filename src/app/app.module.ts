@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+//import { FlexLayoutModule } from '@angular/flex-layout';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { HttpClientModule }    from '@angular/common/http';
 //Angular Material Components
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -21,6 +22,7 @@ import { InputPageComponent } from './input-page/input-page.component';
 import { HelpComponent } from './help/help.component';
 import { ImprintComponent } from './imprint/imprint.component';
 import {MatTableModule} from "@angular/material/table";
+import { TaxAutocompleteComponent } from './tax-autocomplete/tax-autocomplete.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import {MatTableModule} from "@angular/material/table";
     InputPageComponent,
     HelpComponent,
     ImprintComponent,
+    TaxAutocompleteComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,12 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import names from "../../assets/names_small.json";
-//import names2 from "../../assets/names.json";
 import {Observable} from "rxjs";
 import {map, startWith} from "rxjs/operators";
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import { ApiService } from '../api.service';
+import {TaxAutocompleteComponent} from "../tax-autocomplete/tax-autocomplete.component";
 
 export interface TaxName {
   taxID: number;
@@ -23,8 +23,9 @@ export interface TaxName {
 export class InputPageComponent implements OnInit {
   myControl = new FormControl();
   options: TaxName[] = names;
+  taxon: TaxName
+  taxEntry:{taxid:number, name:string};
   filteredOptions: Observable<TaxName[]>;
-  options2: string[] = [];
   selectedOptions:Set<TaxName> = new Set()
   selectedDatabase: string = 'Uniprot';
   selectedRank:string='species';
@@ -34,8 +35,15 @@ export class InputPageComponent implements OnInit {
   dataSource = new MatTableDataSource<TaxName>([]);
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild('bindingInput') bindingInput: ElementRef;
+  @ViewChild(TaxAutocompleteComponent) taxAutocomplete;
+
   constructor(private apiService: ApiService) { }
 
+  receiveTaxEntry($event) {
+    this.taxEntry = $event
+    this.taxon = { taxID: this.taxEntry.taxid, name: this.taxEntry.name.replace(/ *\([^)]*\) */g, ""), rank: 'species'}
+    this.refreshTable(this.taxon);
+  }
 
   ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -60,7 +68,6 @@ export class InputPageComponent implements OnInit {
   addName(taxObject: TaxName): void {
     this.myControl.setValue('');
     this.refreshTable(taxObject);
-
   }
 
   getTaxIDValue(): any {

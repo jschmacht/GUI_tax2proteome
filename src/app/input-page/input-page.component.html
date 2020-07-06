@@ -18,30 +18,32 @@
   </div>
  </form>
 
-<!-- table given input taxons -->
-<p>chosen taxa</p>
-<table mat-table [dataSource]="dataSource" class="table">
-  <!-- Position Column -->
+<!-- autocomplete url db -->
+ <app-tax-autocomplete (messageEvent)="receiveTaxEntry($event)"></app-tax-autocomplete>
+
+<!-- table user given input taxons -->
+<p class="clear-button">selected taxa </p>
+<table mat-table [dataSource]="dataSource" class="container_table mat-elevation-z8">
+  <!-- TaxID Column -->
   <ng-container matColumnDef="taxID">
     <th mat-header-cell *matHeaderCellDef> Taxon ID </th>
     <td mat-cell *matCellDef="let element"> {{element.taxID}} </td>
   </ng-container>
-
   <!-- Name Column -->
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Name </th>
     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
   </ng-container>
-
-  <!-- Weight Column -->
+  <!-- Rank Column -->
   <ng-container matColumnDef="rank">
     <th mat-header-cell *matHeaderCellDef> Rank </th>
     <td mat-cell *matCellDef="let element"> {{element.rank}} </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+
 
 <div class="clear-button">
   <button mat-raised-button color="warn" (click)="deleteSelectedTaxIDs()">Delete all taxa</button>
@@ -89,7 +91,6 @@ taxID input
 </section>
 
 <!-- send get request to REST API -->
-<input type="button" (click)="sendGetRequest()"  value="Generate Database"/>
-
-
-
+<div class="clear-button">
+  <button mat-raised-button color="primary" (click)="sendGetRequest()">Generate Database</button>
+</div>
